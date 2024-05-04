@@ -20,4 +20,20 @@
             }
 
         }
+
+        public static function delete_employee($id){
+            $database = new Database();
+            $conn = $database->getConnection();
+
+            $st = $conn->prepare("DELETE FROM employee WHERE id = :id");
+            $st->bindParam(":id", $id);
+
+            if ($st->execute()){
+                header('HTTP/1.1 201 Employee deleted correctly');
+            }
+            else {
+                header('HTTP/1.1 404 Employee hasnt deleted correctly');
+            }
+
+        }
     }
