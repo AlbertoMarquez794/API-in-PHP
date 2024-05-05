@@ -1,6 +1,9 @@
 <?php
-    require_once('../include/Employee.php');
-    
+    require_once('../include/Generic.php');
+    require_once('../classes/Employee.php');
+
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
-        Employee::get_all_clients();
+        $emp = new Employee();
+        $emp->getEmployees();
+        //Function created correctly
     }
