@@ -5,4 +5,5 @@
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
         $emp = new Employee();
         $emp->getEmployees();
+        //Function created correctly
     }
