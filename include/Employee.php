@@ -36,4 +36,21 @@
             }
 
         }
+        
+        public static function get_all_clients(){
+            $database = new Database();
+            $conn = $database->getConnection();
+
+            $st = $conn->prepare("SELECT * FROM employee");
+
+            if ($st->execute()){
+                $rs = $st->fetchAll();
+                echo json_encode($rs);
+                header('HTTP/1.1 201 OK');
+            }
+            else {
+                header('HTTP/1.1 404 ERROR');
+            }
+
+        }
     }
