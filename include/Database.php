@@ -4,7 +4,7 @@
         private $host = "localhost";
         private $user = "root";
         private $pss = "";
-        private $database = "employees";
+        private $database = "employee";
 
         public function getConnection(){
             $hostDB = "mysql:host=".$this->host.";dbname=".$this->database.";";
@@ -20,3 +20,4 @@
 
 
     }
+    
