@@ -2,7 +2,7 @@
     require 'Database.php';
 
     class Generic {
-        public static function select($query, $parameters) {
+        public function select($query, $parameters) {
             try {
                 $database = new Database();
                 $conn = $database->getConnection();
@@ -37,6 +37,36 @@
             } finally {
                 $conn = null;
             }
+        }
+        
+        public function update($query, $parameters) {
+            try {
+                $database = new Database();
+                $conn = $database->getConnection();
+                $stmt = $conn->prepare($query);
+                $stmt->execute($parameters);
+                $res = $stmt->rowCount();		
+            } catch (Exception $e) {
+                $res = 0;
+            }
+            
+            $database = null;
+            return $res;
+        }
+
+        public function delete($query, $parameters) {
+            try {
+                $database = new Database();
+                $conn = $database->getConnection();
+                $stmt = $conn->prepare($query);
+                $stmt->execute($parameters);
+                $res = $stmt->rowCount();
+            } catch (Exception $e) {
+                $res = 0;
+            }
+            
+            $database = null;
+            return $res;
         }
         
     }

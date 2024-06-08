@@ -46,6 +46,25 @@
             return $data;
         }
 
+        public function updateEmployee($id) {
+            // Construir la consulta SQL
+            $query = "UPDATE employee SET name = :name, email = :email, age = :age, designation = :designation WHERE id = :id";
+            
+            // Preparar los parámetros
+            $parameters = array(
+                ':name' => $this->name,
+                ':email' => $this->email,
+                ':age' => $this->age,
+                ':designation' => $this->designation,
+                ':id' => $id
+            );
+            
+            // Llamar al método insert de la clase Generic
+            $rowAffecteds =  $this->update($query, $parameters);
+
+            return $rowAffecteds;
+        }
+
         public function insertEmployee() {
             // Construir la consulta SQL
             $query = "INSERT INTO employee (name, email, age, designation) VALUES (:name, :email, :age, :designation)";
@@ -61,6 +80,19 @@
             // Llamar al método insert de la clase Generic
             $data =  $this->insert($query, $parameters);
 
+            
+            return $data;
+        }
+
+        public function deleteEmployee($id) {
+      
+            $query = "DELETE FROM employee WHERE id = :id";
+            
+            $parameters = array(
+                ':id' => $id
+            );
+            
+            $data = $this->delete($query, $parameters);
             
             return $data;
         }

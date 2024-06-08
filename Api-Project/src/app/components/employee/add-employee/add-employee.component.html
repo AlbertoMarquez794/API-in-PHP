@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row col-6 mx-auto">
+        <div class="card">
+            <div class="card body">
+                <form #employeeForm="ngForm"(ngSubmit)="add()">
+                    <div class="col-md-12 mb-2">
+                        <label for="">Name</label>
+                        <input type="text" name="name" placeholder="Name" class="form-control" [(ngModel)]="employee.name">
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label for="">Email</label>
+                        <input type="text" name = "email" placeholder="Email" class="form-control" [(ngModel)]="employee.email">
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label for="">Age</label>
+                        <input type="text" name = "age" placeholder="Age" class="form-control" [(ngModel)]="employee.age">
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label for="">Designation</label>
+                        <input type="text" name = "designation" placeholder="Designation" class="form-control" [(ngModel)]="employee.designation">
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

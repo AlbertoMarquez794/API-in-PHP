@@ -35,6 +35,42 @@
                 http_response_code(405);
             }
             break;
+        case 'PUT':
+            // Get the raw POST data
+            $rawData = file_get_contents('php://input');
+            // Decode the JSON data
+            $inf = json_decode($rawData);
+            if ($inf != null){
+                $name = $inf->name;
+                $email = $inf->email;
+                $age = $inf->age;
+                $designation = $inf->designation;
+                $id = $inf->id;
+                $emp = new Employee($name, $email, $age, $designation); 
+                if ($emp->updateEmployee($id)>0){
+                    http_response_code(200);
+                } 
+                else {
+                    http_response_code(400);
+                }
+            }
+            else {
+                http_response_code(405);
+            }
+            break;
+        case 'DELETE':
+            if (isset($_GET['id'])){
+                if ($emp->deleteEmployee($_GET['id'])> 0){
+                    http_response_code(200);
+                } 
+                else {
+                    http_response_code(400);
+                }
+            }
+            else {
+                http_response_code(405);
+            }
+            break;
         default:
             break;
     }
