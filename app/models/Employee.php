@@ -1,5 +1,6 @@
 <?php
-    require_once 'C:\xampp\htdocs\API-in-PHP\Connection\Generic.php';
+    require_once __DIR__ . '/../core/Generic.php';
+
     class Employee extends Generic {
 
         private $name;

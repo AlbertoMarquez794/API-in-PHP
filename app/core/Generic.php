@@ -1,5 +1,5 @@
 <?php
-    require 'Database.php';
+    require_once __DIR__ . '/../core/Database.php';
 
     class Generic {
         public function select($query, $parameters) {
