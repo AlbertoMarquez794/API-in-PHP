@@ -2,20 +2,22 @@
 
 require_once __DIR__ . '/../app/controllers/EmployeeController.php';
 
-// Obtener la ruta de la solicitud
+// Get the path to request
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Limpiar la ruta de cualquier barra diagonal final para evitar problemas
+// Clan the path of any trailing slashes to avoid problems
 $uri = rtrim($uri, '/');
 
-// Determinar qué controlador utilizar según la URI
+// Check which controller to use base on URI
 if (preg_match('/^\/API-in-PHP\/public\/employees\/(\d+)$/', $uri, $matches)) {
-    $id = $matches[1]; // Extrae el ID de la URL
     $controller = new EmployeeController();
-    $controller->getEmployeeId($id);
+    $empId = $controller->handleRequest();
+    require_once '../app/views/employees/empInf.php';
+    
 } elseif ($uri === '/API-in-PHP/public/employees') {
     $controller = new EmployeeController();
-    $controller->handleRequest();
+    $employees = $controller->handleRequest();
+    require_once '../app/views/employees/index.php';
 } else {
     http_response_code(404);
     echo json_encode(['message' => 'Página no encontrada']);

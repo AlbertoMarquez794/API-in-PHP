@@ -12,46 +12,43 @@ class EmployeeController
     public function handleRequest()
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uriSegments = explode('/', trim($uri, '/')); // Divide la URL
+
+        if (isset($uriSegments[3]) && is_numeric($uriSegments[3])) {
+            $id = $uriSegments[3];
+        }
 
         switch ($requestMethod) {
             case 'GET':
-                if (isset($_GET['id'])) {
-                    $this->getEmployeeId($_GET['id']);
+                if (isset($id)) {
+                    // Obtener los datos del empleado
+                    $employeeData = $this->getEmployeeId($id); // Aquí obtienes el JSON
+                    // Decodificar el JSON antes de pasar a la vista
+                    $employeeData = json_decode($employeeData, true); // Decodificamos el JSON
+                    require_once '../app/views/employees/empInf.php'; // Pasamos los datos a la vista
                 } else {
-                    $this->getEmployees();
+                    return $this->getEmployees();
                 }
                 break;
-                /*
-            case 'POST':
-                $this->insertar();
-                break;
-            case 'PUT':
-                if (isset($_GET['id'])) {
-                    $this->actualizar($_GET['id']);
-                }
-                break;
-            case 'DELETE':
-                if (isset($_GET['id'])) {
-                    $this->eliminar($_GET['id']);
-                }
-                break;
-                */
             default:
                 echo json_encode(['mensaje' => 'Método no permitido']);
                 break;
         }
     }
 
+
     public function getEmployees()
     {
         $emp = $this->employee->getEmployees();
-        echo json_encode($emp);
+        //echo json_encode($emp);
+        return $emp;
     }
 
     public function getEmployeeId($id)
     {
-        $empI= $this->employee->getEmployeeId($id);
-        echo json_encode($empI);
+        $empI = $this->employee->getEmployeeId($id);
+        return json_encode($empI);
     }
     
     /*

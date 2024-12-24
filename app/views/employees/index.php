@@ -16,6 +16,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Age</th>
+                    <th>Designation</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,10 +26,11 @@
                         <td><?= htmlspecialchars($employee['name']) ?></td>
                         <td><?= htmlspecialchars($employee['email']) ?></td>
                         <td><?= htmlspecialchars($employee['age']) ?></td>
+                        <td><?= htmlspecialchars($employee['designation']) ?></td>
                         <td>
-                            <a href="/employees/<?= htmlspecialchars($employee['id']) ?>">Ver</a> |
-                            <a href="/employees/<?= htmlspecialchars($employee['id']) ?>/edit">Editar</a> |
-                            <a href="/employees/<?= htmlspecialchars($employee['id']) ?>/delete" onclick="return confirm('¿Estás seguro de eliminar este empleado?')">Eliminar</a>
+                            <a href="/API-in-PHP/public/employees/<?= htmlspecialchars($employee['id']) ?>">Search</a> |
+                            <a href="/employees/<?= htmlspecialchars($employee['id']) ?>/edit">Edit</a> |
+                            <a href="/employees/<?= htmlspecialchars($employee['id']) ?>/delete" onclick="return confirm('Are you sure that you want to delete him (her)?')">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
