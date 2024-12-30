@@ -40,19 +40,30 @@
         }
         
         public function update($query, $parameters) {
+            $res = -1; // Inicializar el resultado por defecto
             try {
                 $database = new Database();
                 $conn = $database->getConnection();
                 $stmt = $conn->prepare($query);
+        
+                // Ejecutar la consulta con los parámetros proporcionados
                 $stmt->execute($parameters);
-                $res = $stmt->rowCount();		
-            } catch (Exception $e) {
-                $res = 0;
+        
+                // Obtener el número de filas afectadas
+                $res = $stmt->rowCount();	
+            } catch (PDOException $e) {
+                // Manejo de errores: puedes registrar el error o lanzar una excepción personalizada
+                error_log("Error en la actualización: " . $e->getMessage());
+                throw new Exception("Error al ejecutar la consulta.");
+            } finally {
+                // Asegurarte de liberar recursos cerrando las conexiones
+                $stmt = null;
+                $conn = null;
             }
-            
-            $database = null;
-            return $res;
+        
+            return $res; // Retorna el número de filas afectadas
         }
+        
 
         public function delete($query, $parameters) {
             try {

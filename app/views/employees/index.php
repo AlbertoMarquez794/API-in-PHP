@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Empleados</title>
-    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <h1>List of employees</h1>
@@ -29,7 +28,7 @@
                         <td><?= htmlspecialchars($employee['designation']) ?></td>
                         <td>
                             <a href="/API-in-PHP/public/employees/<?= htmlspecialchars($employee['id']) ?>">Search</a> |
-                            <a href="/employees/<?= htmlspecialchars($employee['id']) ?>/edit">Edit</a> |
+                            <a href="/API-in-PHP/public/employees/<?= htmlspecialchars($employee['id']) ?>/edit">Edit</a> |
                             <a href="/employees/<?= htmlspecialchars($employee['id']) ?>/delete" onclick="return confirm('Are you sure that you want to delete him (her)?')">Delete</a>
                         </td>
                     </tr>

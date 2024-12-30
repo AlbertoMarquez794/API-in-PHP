@@ -11,14 +11,21 @@ $uri = rtrim($uri, '/');
 // Check which controller to use base on URI
 if (preg_match('/^\/API-in-PHP\/public\/employees\/(\d+)$/', $uri, $matches)) {
     $controller = new EmployeeController();
-    $empId = $controller->handleRequest();
+    $empId = $controller->handleRequest(); // Procesa GET, PUT, DELETE en esta ruta
     require_once '../app/views/employees/empInf.php';
-    
 } elseif ($uri === '/API-in-PHP/public/employees') {
     $controller = new EmployeeController();
-    $employees = $controller->handleRequest();
+    $employees = $controller->handleRequest(); // Procesa GET o POST aqui
     require_once '../app/views/employees/index.php';
-} else {
+} elseif (preg_match('/^\/API-in-PHP\/public\/employees\/(\d+)\/edit$/', $uri, $matches)) {
+    $controller = new EmployeeController();
+    $empId = $controller->handleRequest(); // Procesa GET y muestra el formulario de edición
+    require_once '../app/views/employees/empEdt.php';
+} elseif (preg_match('/^\/API-in-PHP\/public\/employees\/up\/(\d+)$/', $uri, $matches)){
+    $controller = new EmployeeController();
+    $empId = $controller->handleRequest(); // Procesa PUT para la edición de datos
+}
+else {
     http_response_code(404);
     echo json_encode(['message' => 'Página no encontrada']);
 }
