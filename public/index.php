@@ -1,33 +1,85 @@
 <?php
 
-require_once __DIR__ . '/../app/controllers/EmployeeController.php';
+// Manual Loader for Controllers
+function loadController($controllerName)
+{
+    $filePath = __DIR__ . '/../app/controllers/' . $controllerName . '.php';
+    if (file_exists($filePath)) {
+        require_once $filePath;
+    } else {
+        http_response_code(500);
+        echo json_encode(['message' => 'Controller not found: ' . $controllerName]);
+        exit;
+    }
+}
 
-// Get the path to request
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+// Load the EmployeeController manually
+loadController('EmployeeController');
 
-// Clan the path of any trailing slashes to avoid problems
-$uri = rtrim($uri, '/');
+// Routing Class
+class Router
+{
+    private $routes = [];
 
-// Check which controller to use base on URI
-if (preg_match('/^\/API-in-PHP\/public\/employees\/(\d+)$/', $uri, $matches)) {
+    /**
+     * Add a route pattern and its handler.
+     */
+    public function add($pattern, $callback)
+    {
+        $this->routes[$pattern] = $callback;
+    }
+
+    /**
+     * Dispatch the incoming request to the matching route.
+     */
+    public function dispatch()
+    {
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri = rtrim($uri, '/');
+
+        foreach ($this->routes as $pattern => $callback) {
+            if (preg_match($pattern, $uri, $matches)) {
+                array_shift($matches); // Remove the full match
+                return call_user_func_array($callback, $matches);
+            }
+        }
+
+        // Handle 404 Not Found
+        http_response_code(404);
+        echo json_encode(['message' => 'Página no encontrada']);
+    }
+}
+
+// Initialize Router
+$router = new Router();
+
+// Define Routes
+$router->add('/^\/API-in-PHP\/public\/employees\/(\d+)$/', function ($id) {
     $controller = new EmployeeController();
-    $empId = $controller->handleRequest(); // Procesa GET, PUT, DELETE en esta ruta
+    $empId = $controller->handleRequest($id); // Procesa GET, PUT, DELETE
     require_once '../app/views/employees/empInf.php';
-} elseif ($uri === '/API-in-PHP/public/employees') {
+});
+
+$router->add('/^\/API-in-PHP\/public\/employees$/', function () {
     $controller = new EmployeeController();
-    $employees = $controller->handleRequest(); // Procesa GET o POST aqui
+    $employees = $controller->handleRequest(); // Procesa GET o POST
     require_once '../app/views/employees/index.php';
-} elseif (preg_match('/^\/API-in-PHP\/public\/employees\/(\d+)\/edit$/', $uri, $matches)) {
+});
+
+$router->add('/^\/API-in-PHP\/public\/employees\/(\d+)\/edit$/', function ($id) {
     $controller = new EmployeeController();
-    $empId = $controller->handleRequest(); // Procesa GET y muestra el formulario de edición
+    $empId = $controller->handleRequest($id); // Procesa GET para editar
     require_once '../app/views/employees/empEdt.php';
-} elseif (preg_match('/^\/API-in-PHP\/public\/employees\/up\/(\d+)$/', $uri, $matches)){
+});
+
+$router->add('/^\/API-in-PHP\/public\/employees\/up\/(\d+)$/', function ($id) {
     $controller = new EmployeeController();
-    $empId = $controller->handleRequest(); // Procesa PUT para la edición de datos
-} elseif ($uri === '/API-in-PHP/public/employees/createEmployee'){
+    $empId = $controller->handleRequest($id); // Procesa PUT para actualizar
+});
+
+$router->add('/^\/API-in-PHP\/public\/employees\/createEmployee$/', function () {
     require_once '../app/views/employees/createEmployee.php';
-}
-else {
-    http_response_code(404);
-    echo json_encode(['message' => 'Página no encontrada']);
-}
+});
+
+// Dispatch Request
+$router->dispatch();

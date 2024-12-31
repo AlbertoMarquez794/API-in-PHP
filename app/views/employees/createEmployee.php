@@ -20,7 +20,7 @@
         <label for="designation">Designation:</label><br>
         <input type="text" id="designation" name="designation" required><br><br>
 
-        <button type="submit">Actualizar</button>
+        <button type="submit">Submit</button>
     </form>
 
     <script>
@@ -28,25 +28,18 @@
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
-            // Obtener los datos del formulario
-            const id = document.getElementById('id').value.trim();
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const age = parseInt(document.getElementById('age').value.trim(), 10);
             const designation = document.getElementById('designation').value.trim();
 
-            // Validación de los datos del formulario
-            if (!id || !name || !email || isNaN(age) || !designation) {
-                alert("Por favor, complete todos los campos correctamente.");
-                return;
-            }
-
+    
             // Crear el cuerpo de la solicitud
             const data = { name, email, age, designation };
 
             try {
-                const response = await fetch(`http://localhost:8080/API-in-PHP/public/employees/up/${id}`, {
-                    method: 'PUT',
+                const response = await fetch(`http://localhost:8080/API-in-PHP/public/employees/newEmployee`, {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
