@@ -39,6 +39,6 @@
         <p>No hay empleados registrados.</p>
     <?php endif; ?>
 
-    <a href="/employees/create">Añadir Nuevo Empleado</a>
+    <a href="/API-in-PHP/public/employees/createEmployee">Añadir Nuevo Empleado</a>
 </body>
 </html>

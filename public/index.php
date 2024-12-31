@@ -24,6 +24,8 @@ if (preg_match('/^\/API-in-PHP\/public\/employees\/(\d+)$/', $uri, $matches)) {
 } elseif (preg_match('/^\/API-in-PHP\/public\/employees\/up\/(\d+)$/', $uri, $matches)){
     $controller = new EmployeeController();
     $empId = $controller->handleRequest(); // Procesa PUT para la edición de datos
+} elseif ($uri === '/API-in-PHP/public/employees/createEmployee'){
+    require_once '../app/views/employees/createEmployee.php';
 }
 else {
     http_response_code(404);
