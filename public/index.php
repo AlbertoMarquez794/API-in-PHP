@@ -56,7 +56,7 @@ $router = new Router();
 // Define Routes
 $router->add('/^\/API-in-PHP\/public\/employees\/(\d+)$/', function ($id) {
     $controller = new EmployeeController();
-    $empId = $controller->handleRequest(); // Procesa GET, PUT, DELETE
+    $empId = $controller->handleRequest(); // Procesa GET
     require_once '../app/views/employees/empInf.php';
 });
 
@@ -80,6 +80,12 @@ $router->add('/^\/API-in-PHP\/public\/employees\/up\/(\d+)$/', function ($id) {
 $router->add('/^\/API-in-PHP\/public\/employees\/createEmployee$/', function () {
     require_once '../app/views/employees/createEmployee.php';
 });
+
+$router->add('/^\/API-in-PHP\/public\/employees\/newEmployee$/', function () {
+    $controller = new EmployeeController();
+    $controller->handleRequest(); // Process 'POST'
+});
+
 
 // Dispatch Request
 $router->dispatch();

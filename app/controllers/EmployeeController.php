@@ -73,6 +73,11 @@ class EmployeeController
                 // Si todos los campos están presentes y son válidos, actualizar el empleado
                 $this->updateEmployee($id, $inputData);
                 break;
+            case 'POST':
+                $inputData = json_decode(file_get_contents('php://input'), true);
+                $this->insertEmployee( $inputData);
+                
+                break;
             default:
                 echo json_encode(['mensaje' => 'Método no permitido']);
                 break;
@@ -92,27 +97,25 @@ class EmployeeController
         return json_encode($empI);
     }
 
-    
-    /*
-    public function insertar()
-    {
-        // Leer y decodificar el cuerpo de la solicitud
-        $data = json_decode(file_get_contents('php://input'), true);
+    public function insertEmployee($inputData){
 
-        // Verificar si el JSON es válido
-        if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
-            echo json_encode([
-                'status' => 'error',
-                'message' => 'JSON inválido: ' . json_last_error_msg()
-            ]);
-            exit;
+        $this->employee->setAge($inputData['age']);
+        $this->employee->setDesignation($inputData['designation']);
+        $this->employee->setName($inputData['name']);
+        $this->employee->setEmail($inputData['email']);
+
+        // Lógica para actualizar el empleado en la base de datos
+        header('Content-Type: application/json'); // Establece el tipo de contenido como JSON
+        $res = $this->employee->insertEmployee();
+
+        if ($res){
+            http_response_code(200);
+            echo json_encode(['message' => 'Employee added correctly']);
         }
-
-        // Realizar la inserción
-        $resultado = $this->refranModel->insertar($data);
-        echo json_encode($resultado);
+        else {
+            echo json_encode(['error' => 'Error uploading employee']);
+        }
     }
-*/
     public function updateEmployee($id, $inputData)
     {
         // Asegúrate de que estás utilizando correctamente los datos proporcionados

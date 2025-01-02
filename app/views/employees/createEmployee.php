@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Add new employee</h1>
-    <form id="updateEmployeeForm">
+    <form id="createEmployeeForm">
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name" required><br><br>
 
@@ -24,7 +24,7 @@
     </form>
 
     <script>
-       const form = document.getElementById('updateEmployeeForm');
+       const form = document.getElementById('createEmployeeForm');
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -53,12 +53,12 @@
                     const result = JSON.parse(text);
                     
                     if (response.ok) {
-                        console.log(result.message); // Mensaje exitoso
+                        alert(result.message || 'Employee added successfully!'); // Mensaje exitoso
                     } else {
-                        console.error(result.error); // Mensaje de error
+                        alert(`Error: ${result.error || 'Unable to add employee'}`); // Mensaje de error
                     }
                 } else {
-                    console.error('Respuesta no es JSON:', text);
+                    alert('Unexpected response format. Please contact support.');
                 }
             } catch (error) {
                 console.error('Hubo un error al procesar la solicitud:', error);
