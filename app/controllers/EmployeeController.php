@@ -76,8 +76,22 @@ class EmployeeController
             case 'POST':
                 $inputData = json_decode(file_get_contents('php://input'), true);
                 $this->insertEmployee( $inputData);
-                
                 break;
+            case 'DELETE':
+                // Decodifica el cuerpo de la solicitud
+                $inputData = json_decode(file_get_contents('php://input'), true);
+            
+                // Verifica que se haya recibido un 'id' válido
+                if (!isset($inputData['id']) || !is_numeric($inputData['id'])) {
+                    http_response_code(400); // Código de respuesta para "Bad Request"
+                    echo json_encode(['error' => 'ID inválido o no proporcionado']);
+                    break;
+                }
+            
+                // Llama a la función para eliminar al empleado
+                $this->deleteEmployee($inputData['id']);
+            
+                break;                
             default:
                 echo json_encode(['mensaje' => 'Método no permitido']);
                 break;
@@ -131,7 +145,7 @@ class EmployeeController
         
         if ($rowAffecteds > 0) {
             http_response_code(200);
-            echo json_encode(['message' => 'Empleado actualizado correctamente']);
+            echo json_encode(['message' => 'Employee updated correctly']);
         } else if ($rowAffecteds === 0){
             //http_response_code(304); // Not Modified
             echo json_encode(['message' => 'There is no new data to update']);
@@ -144,11 +158,20 @@ class EmployeeController
 
 
 
-/*
-    public function eliminar($id)
+
+    public function deleteEmployee($id)
     {
-        $resultado = $this->refranModel->eliminar($id);
-        echo json_encode($resultado);
+        // Lógica para actualizar el empleado en la base de datos
+        header('Content-Type: application/json'); // Establece el tipo de contenido como JSON
+        $rowAffecteds = $this->employee->deleteEmployee($id);
+        if ($rowAffecteds > 0) {
+            http_response_code(200);
+            echo json_encode(['message' => 'Employee deleted correctly']);
+        }
+        else {
+            http_response_code(200);
+            echo json_encode(['error' => 'Failed to delete employee']);
+        }
     }
-    */
+
 }

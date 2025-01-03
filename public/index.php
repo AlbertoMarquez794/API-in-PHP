@@ -86,6 +86,10 @@ $router->add('/^\/API-in-PHP\/public\/employees\/newEmployee$/', function () {
     $controller->handleRequest(); // Process 'POST'
 });
 
+$router->add('/^\/API-in-PHP\/public\/employees\/deleteEmployee$/', function () {
+    $controller = new EmployeeController();
+    $controller->handleRequest(); // Process 'DELETE'
+});
 
 // Dispatch Request
 $router->dispatch();

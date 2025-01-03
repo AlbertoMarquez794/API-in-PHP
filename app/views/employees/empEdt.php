@@ -63,6 +63,7 @@
                     const result = JSON.parse(text);
                     
                     if (response.ok) {
+                        alert(result.message);
                         console.log(result.message); // Mensaje exitoso
                     } else {
                         console.error(result.error); // Mensaje de error
