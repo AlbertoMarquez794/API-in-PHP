@@ -4,11 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Empleados</title>
+    <style>
+        #employeeTable {
+            margin-top: 20px;
+        }
+        #searchInput {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 300px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
     <h1>List of Employees</h1>
+
+    <!-- Search Box -->
+    <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search employees by name..." 
+        onkeyup="filterTable()"
+    />
+
     <?php if (!empty($employees)): ?>
-        <table border="1" cellspacing="0" cellpadding="10">
+        <table id="employeeTable" border="1" cellspacing="0" cellpadding="10">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -69,7 +89,6 @@
 
                     const contentType = response.headers.get('Content-Type');
                     const text = await response.text();
-                    console.log(text);
                     if (contentType && contentType.includes('application/json')) {
                         const result = JSON.parse(text);
                         if (response.ok) {
@@ -91,8 +110,35 @@
                 }
             }
         });
+
+        // Function to filter table based on search input
+        function filterTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('employeeTable');
+            const rows = table.getElementsByTagName('tr');
+
+            // Loop through table rows, excluding the header
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let match = false;
+
+                // Check each cell in the row
+                for (let j = 0; j < cells.length; j++) {
+                    const cell = cells[j];
+                    if (cell) {
+                        const text = cell.textContent || cell.innerText;
+                        if (text.toLowerCase().includes(filter)) {
+                            match = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Toggle row visibility
+                rows[i].style.display = match ? '' : 'none';
+            }
+        }
     </script>
 </body>
 </html>
-
-
